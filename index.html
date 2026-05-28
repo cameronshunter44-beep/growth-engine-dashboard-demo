@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luna Blu Oxford Dashboard</title>
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --bg-2: #e8edf3;
+      --panel: #0e1729;
+      --panel-2: #13213a;
+      --card: rgba(255,255,255,0.88);
+      --line: #d6dfeb;
+      --text: #0f172a;
+      --muted: #607186;
+      --white: #fff;
+      --accent: #c9a867;
+      --accent-soft: rgba(201,168,103,0.14);
+      --success-bg: #e7f7ec;
+      --success-text: #1a7d47;
+      --pending-bg: #faf3e4;
+      --pending-text: #936315;
+      --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.12);
+      --shadow-md: 0 16px 38px rgba(15, 23, 42, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124,230,222,0.15), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    }
+
+    button, input, textarea { font: inherit; }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, #091223 0%, #0d1830 55%, #101c35 100%);
+      color: var(--white);
+      padding: 24px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: auto;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .sidebar-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .eyebrow.muted { color: #8ea0ba; }
+
+    .sidebar-title {
+      font-size: 30px;
+      line-height: 1.02;
+      margin: 0 0 12px;
+      font-weight: 950;
+      letter-spacing: -0.04em;
+    }
+
+    .sidebar-copy,
+    .client-meta {
+      color: rgba(255,255,255,0.78);
+      font-size: 15px;
+      line-height: 1.58;
+    }
+
+    .client-name {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      line-height: 1.08;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 12px 15px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(201,168,103,0.2);
+      color: #f3d7a0;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.94);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .nav-btn:hover { background: rgba(255,255,255,0.08); }
+
+    .nav-btn.active {
+      background: linear-gradient(180deg, #ffffff 0%, #edf3f8 100%);
+      color: #0f172a;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.14);
+    }
+
+    .list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.85);
+      font-size: 14px;
+    }
+
+    .main { padding: 34px 30px 44px; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      margin: 8px 0 0;
+      font-size: 56px;
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+      font-weight: 950;
+    }
+
+    .page-copy {
+      max-width: 920px;
+      margin-top: 12px;
+      font-size: 17px;
+      line-height: 1.72;
+      color: var(--muted);
+    }
+
+    .update-badge {
+      background: rgba(255,255,255,0.82);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-weight: 800;
+      color: #334155;
+      box-shadow: var(--shadow-md);
+      white-space: nowrap;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #66758b;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 34px;
+      font-weight: 950;
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+    }
+
+    .stat-detail,
+    .section-subtitle,
+    .row-meta,
+    .soft-box,
+    .score-row,
+    .info-copy,
+    .action-item-copy,
+    .check-row {
+      color: var(--muted);
+      line-height: 1.68;
+      font-size: 15px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .stack { display: grid; gap: 14px; }
+
+    .section-title {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle { margin: 8px 0 0; }
+
+    .row-btn,
+    .soft-box,
+    .score-row,
+    .info-box,
+    .action-item,
+    .check-item {
+      width: 100%;
+      background: rgba(247,249,252,0.92);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+    }
+
+    .row-btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      cursor: pointer;
+      color: inherit;
+      transition: 0.18s ease;
+    }
+
+    .row-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .row-title {
+      font-size: 18px;
+      font-weight: 850;
+      line-height: 1.3;
+      color: #0f172a;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 122px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .status.live { background: var(--success-bg); color: var(--success-text); }
+    .status.review { background: var(--pending-bg); color: var(--pending-text); }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .priority-card {
+      margin-top: 24px;
+      padding: 24px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at top right, rgba(124,230,222,0.08), transparent 28%),
+        linear-gradient(135deg, #0c1830 0%, #13294b 55%, #1a3761 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow-lg);
+      color: #fff;
+    }
+
+    .priority-card h3 {
+      margin: 0 0 10px;
+      font-size: 25px;
+      line-height: 1.08;
+      font-weight: 950;
+      letter-spacing: -0.03em;
+    }
+
+    .priority-card p {
+      margin: 0;
+      line-height: 1.72;
+      color: rgba(255,255,255,0.85);
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn-primary, .btn-secondary {
+      border-radius: 16px;
+      padding: 13px 17px;
+      font-weight: 850;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #162c4f 0%, #10223f 100%);
+      color: #fff;
+      box-shadow: 0 10px 22px rgba(16,34,63,0.16);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.82);
+      color: var(--text);
+      border-color: #c8d2de;
+    }
+
+    .btn-primary.approved-btn {
+      background: #1f7a45;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .btn-primary:disabled { opacity: 1; }
+
+    .approval-note {
+      background: #ecf8ef;
+      border-color: #cfead7;
+      color: #1f7a45;
+      margin-top: 16px;
+    }
+
+    .locked-note {
+      background: #faf5e8;
+      border-color: #ecd9ad;
+      color: #8d6416;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .info-title {
+      font-size: 16px;
+      font-weight: 850;
+      margin-bottom: 8px;
+      color: #0f172a;
+    }
+
+    .action-item {
+      background: linear-gradient(180deg, #fbfcfe 0%, #f6f9fc 100%);
+    }
+
+    .action-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .action-title {
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .priority-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .priority-pill.high { background: #eef5ff; color: #2456a6; }
+    .priority-pill.medium { background: #f8f2e8; color: #916315; }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+      color: #72849b;
+      margin-bottom: 6px;
+    }
+
+    .value {
+      color: #0f172a;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .check-wrap {
+      display: grid;
+      gap: 14px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: 0.18s ease;
+    }
+
+    .check-item.done {
+      opacity: 0.78;
+      background: #eff7f2;
+      border-color: #cfe6d7;
+    }
+
+    .check-item input[type="checkbox"] {
+      width: 19px;
+      height: 19px;
+      margin-top: 3px;
+      accent-color: #1f7a45;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+
+    .check-title {
+      font-size: 17px;
+      font-weight: 850;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .completed-wrap {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .completed-empty {
+      font-size: 14px;
+      color: #7b8ba1;
+    }
+
+    .mini-kpi {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(16,34,63,0.08);
+      color: #0f172a;
+      font-size: 13px;
+      font-weight: 800;
+      margin: 8px 10px 0 0;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.62);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 40;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      width: min(940px, 100%);
+      max-height: 88vh;
+      overflow: auto;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 28px 80px rgba(2,6,23,0.28);
+      border: 1px solid #e2e8f0;
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 22px 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      z-index: 2;
+    }
+
+    .modal-body {
+      padding: 24px;
+      color: #334155;
+      line-height: 1.82;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 950;
+      color: #0f172a;
+      letter-spacing: -0.03em;
+    }
+
+    .modal-sub { margin: 8px 0 0; color: var(--muted); }
+
+    @media (max-width: 1180px) {
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .two-col { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+      .action-grid { grid-template-columns: 1fr; }
+      .page-title { font-size: 46px; }
+    }
+
+    @media (max-width: 900px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar {
+        position: relative;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .main { padding: 24px 18px 36px; }
+      .topbar { flex-direction: column; }
+      .page-title { font-size: 40px; }
+    }
+
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: 1fr; }
+      .row-btn, .action-top { flex-direction: column; align-items: flex-start; }
+      .update-badge { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-card">
+        <div class="eyebrow">Oxford Growth Engine</div>
+        <div class="sidebar-title">Luna Blu Review Dashboard</div>
+        <p class="sidebar-copy">A premium mock dashboard for an Oxford salon and spa business, centered on service clarity, online booking, gift certificate flow, and recurring monthly improvement opportunities.</p>
+      </div>
+
+      <div class="sidebar-card" style="margin-top:16px;">
+        <div class="eyebrow muted">Business Profile</div>
+        <div id="clientName" class="client-name"></div>
+        <div id="clientMeta" class="client-meta"></div>
+        <div id="planPill" class="pill"></div>
+      </div>
+
+      <div class="nav-list" id="navList"></div>
+
+      <div class="sidebar-card" style="margin-top:16px;">
+        <div style="font-size:14px; font-weight:800;">Current Review Focus</div>
+        <ul class="list" id="focusList"></ul>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section id="overview" class="screen active"></section>
+      <section id="monthly" class="screen"></section>
+      <section id="actionPlan" class="screen"></section>
+      <section id="checklist" class="screen"></section>
+      <section id="nextMonth" class="screen"></section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <p class="modal-sub" id="modalSub"></p>
+        </div>
+        <button class="btn-secondary" id="closeModal">Close</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    const dashboardData = {
+      business: {
+        name: "Luna Blu salon.spa.galleria",
+        city: "115 W. Spring Street · Oxford, OH 45056",
+        serviceLine: "Oxford service business review dashboard",
+        planStatus: "mock dashboard preview",
+        dashboardTitle: "Luna Blu · Oxford Growth Dashboard"
+      },
+
+      focus: [
+        "Keep online booking and gift-certificate paths highly visible",
+        "Clarify top services faster for new visitors",
+        "Turn promotions, newsletters, and booking into one cleaner monthly rhythm"
+      ],
+
+      stats: [
+        {
+          label: "Business Type",
+          value: "Salon + Spa",
+          detail: "Service mix spans salon and spa categories, so clarity and booking flow matter a lot."
+        },
+        {
+          label: "Core Action",
+          value: "Book Online",
+          detail: "The site offers online booking, so improving the path to booking is a high-value lever."
+        },
+        {
+          label: "Extra Revenue",
+          value: "Gift Cards",
+          detail: "Gift certificates are already offered and can be surfaced more intentionally."
+        },
+        {
+          label: "Current Status",
+          value: "Review Ready",
+          detail: "This dashboard frames what is working now, what should be improved, and what unlocks next cycle."
+        }
+      ],
+
+      currentView: [
+        {
+          label: "Main opportunity",
+          value: "Service clarity",
+          detail: "There are many categories, so helping first-time visitors choose faster is a key opportunity."
+        },
+        {
+          label: "Main conversion path",
+          value: "Online booking",
+          detail: "Booking is already available, which makes CTA placement and page clarity more important."
+        },
+        {
+          label: "Main support offer",
+          value: "Gift certificates",
+          detail: "Gift cards can support seasonal demand and should stay easy to find."
+        },
+        {
+          label: "Main retention angle",
+          value: "Monthly touchpoints",
+          detail: "Newsletter signups and promotions can support repeat visits when organized cleanly."
+        }
+      ],
+
+      priorities: [
+        ["Top customer question", "What should I book?"],
+        ["Top conversion point", "Booking CTA visibility"],
+        ["Top trust factor", "Clear service structure"],
+        ["Top extra revenue path", "Gift certificates"],
+        ["Top recurring angle", "Monthly promotions"]
+      ],
+
+      monthlyUpdates: {
+        monthLabel: "Current Review Cycle",
+        topPriority: "Use this cycle to make Luna Blu easier to understand for a first-time Oxford visitor, while keeping online booking, gift certificates, and monthly promotions more visible and more connected.",
+        completed: [
+          "Reviewed the core website structure, service categories, online booking flow, and gift-certificate placement.",
+          "Mapped the main public service categories including cutting and styling, hair color, nail services, body care, facials, massage, hair removal, and makeovers.",
+          "Identified online booking, gift certificates, and newsletter signup as the clearest current customer actions."
+        ],
+        inProgress: [
+          "Refining which services should be surfaced first for easier customer decision-making.",
+          "Tightening the booking path so visitors reach the right appointment action faster.",
+          "Organizing promotions and monthly update content into a cleaner client-facing system."
+        ],
+        unlockedNextMonth: [
+          "Homepage hierarchy improvements for high-intent service categories unlock next cycle.",
+          "Gift-certificate and seasonal promotion strategy unlocks next cycle.",
+          "Monthly newsletter and repeat-visit visibility plan unlocks with continued support."
+        ],
+        notes: [
+          "The strongest current actions are already present on the site, so the biggest gains are likely to come from clarity, ordering, and visibility.",
+          "This business has multiple service lines, so simplifying choice is likely more valuable than adding more options.",
+          "The next-cycle section is intentionally previewed to support recurring monthly service value."
+        ]
+      },
+
+      actionPlan: [
+        {
+          title: "Make booking more visible above the fold",
+          priority: "High",
+          issue: "A new visitor should see the booking action quickly without needing to hunt through service content.",
+          changeWhat: "Move the primary booking call-to-action higher and repeat it more consistently on high-intent pages.",
+          changeTo: "Use a cleaner primary button treatment like ‘Book Your Appointment’ near the top of the homepage and service-entry sections.",
+          howTo: [
+            "Place one main booking button in the hero or first visible section of the homepage.",
+            "Repeat the same booking button under the first service-entry block so visitors see it again after scanning services.",
+            "Use the same wording everywhere instead of changing the CTA language from page to page.",
+            "Keep the button visually stronger than secondary links so it clearly reads as the main action."
+          ],
+          whatToUse: [
+            "Primary button text: ‘Book Your Appointment’",
+            "Support text: ‘Choose your service and reserve your time online.’",
+            "Placement: hero section + top service-entry section"
+          ],
+          why: "This makes the highest-value action easier to notice and reduces friction for ready-to-book visitors.",
+          doneLooksLike: "A first-time visitor can land on the homepage, immediately see that online booking is available, and reach the appointment path without scrolling through too much content."
+        },
+        {
+          title: "Create a clearer ‘Start Here’ service structure",
+          priority: "High",
+          issue: "A business with many services can create hesitation when first-time visitors are not sure where to begin.",
+          changeWhat: "Group top categories more intentionally and help visitors understand the most common entry paths.",
+          changeTo: "Add a ‘Start Here’ or ‘Most Booked Services’ section that highlights the most common categories first.",
+          howTo: [
+            "Choose 3 to 5 top service categories that are most likely to matter to a new visitor.",
+            "Place those categories above longer full-menu content.",
+            "Use short one-line descriptions under each category so someone knows what each one is for.",
+            "Link each category directly to its booking or detail path instead of making the customer search again."
+          ],
+          whatToUse: [
+            "Section heading: ‘Start Here’ or ‘Most Booked Services’",
+            "Example categories: Hair Color, Massage, Facials, Nail Services",
+            "Format: 3–5 clean cards with short descriptions"
+          ],
+          why: "This helps customers make faster decisions and improves confidence instead of forcing them to scan everything.",
+          doneLooksLike: "A new visitor can quickly understand the main service paths and choose where to start without reading the full service menu first."
+        },
+        {
+          title: "Use gift certificates more intentionally",
+          priority: "Medium",
+          issue: "Gift certificates are valuable, but they may feel like a side option instead of a strategic revenue path.",
+          changeWhat: "Surface gift certificates in seasonal areas and near repeat-visit or gifting moments.",
+          changeTo: "Add a more visible gift-certificate feature block tied to holidays, celebrations, and local gifting moments.",
+          howTo: [
+            "Place a gift-certificate callout on the homepage or promotions area instead of burying it only in navigation.",
+            "Use seasonal language around birthdays, holidays, thank-you gifts, and self-care gifting.",
+            "Repeat the gift-certificate mention during peak gifting periods in banners or monthly promo sections.",
+            "Keep the path to purchase short and obvious."
+          ],
+          whatToUse: [
+            "Section heading: ‘Gift the Luna Blu Experience’",
+            "Support line: ‘Perfect for holidays, birthdays, thank-you gifts, and self-care treats.’",
+            "Placement: homepage promo area + seasonal promo spots"
+          ],
+          why: "This supports extra revenue without needing a new service line.",
+          doneLooksLike: "Gift certificates feel like a real featured offer instead of a hidden extra, especially during gifting seasons."
+        },
+        {
+          title: "Turn newsletter signup into a repeat-visit tool",
+          priority: "Medium",
+          issue: "Newsletter signup can feel passive if it is not clearly connected to ongoing offers or reasons to return.",
+          changeWhat: "Position newsletter signup as a way to stay updated on promotions, gift ideas, and featured services.",
+          changeTo: "Shift the message to something like ‘Get monthly salon and spa updates, seasonal specials, and gift ideas.’",
+          howTo: [
+            "Rewrite the signup headline so it clearly says what the customer gets.",
+            "Place the signup near promotions, gift cards, or repeat-visit areas instead of treating it like a generic footer element.",
+            "Keep the message short and benefit-driven.",
+            "Use consistent monthly themes so signing up feels worth it."
+          ],
+          whatToUse: [
+            "Headline: ‘Stay in the loop’ or ‘Get monthly salon + spa updates’",
+            "Support line: ‘Seasonal specials, featured services, and gift ideas sent monthly.’",
+            "Placement: promotions section or lower homepage conversion area"
+          ],
+          why: "This makes signup more relevant and supports recurring visibility over time.",
+          doneLooksLike: "The newsletter signup feels like a useful ongoing value path instead of a generic email box."
+        },
+        {
+          title: "Add a stronger contact and first-visit confidence section",
+          priority: "Medium",
+          issue: "New visitors may want quick reassurance around where to go, how to reach the salon, and what to expect before booking.",
+          changeWhat: "Make contact details, first-visit guidance, and confidence-building info more visible near key decision points.",
+          changeTo: "Add a cleaner ‘Plan Your Visit’ or ‘Before You Book’ section with address, phone, parking or arrival guidance, and simple first-visit expectations.",
+          howTo: [
+            "Create a short section that answers the most basic first-visit questions.",
+            "Include address, phone, and what a new client should expect before arriving.",
+            "Place it below high-intent service or booking areas so hesitant visitors get reassurance before leaving the page.",
+            "Keep the tone simple and welcoming rather than overly detailed."
+          ],
+          whatToUse: [
+            "Section heading: ‘Plan Your Visit’ or ‘Before You Book’",
+            "Include: address, phone, arrival guidance, and simple first-visit notes",
+            "Tone: short, calm, welcoming"
+          ],
+          why: "This reduces hesitation for first-time visitors and makes the business feel more prepared and easier to trust.",
+          doneLooksLike: "A new customer can quickly understand where Luna Blu is, how to contact the salon, and what to expect before their first appointment."
+        }
+      ],
+
+      checklist: [
+        {
+          id: "task-booking-cta",
+          title: "Move booking CTA higher on key pages",
+          detail: "Update homepage and top service entry sections so booking is visible sooner."
+        },
+        {
+          id: "task-start-here",
+          title: "Add a ‘Start Here’ service section",
+          detail: "Help first-time visitors choose from the most common or best-fit service categories faster."
+        },
+        {
+          id: "task-gift-cards",
+          title: "Add stronger gift-certificate placement",
+          detail: "Surface gift certificates more clearly in promotional and seasonal areas."
+        },
+        {
+          id: "task-newsletter-copy",
+          title: "Rewrite newsletter signup message",
+          detail: "Make the value of subscribing more tied to promotions, updates, and repeat visits."
+        },
+        {
+          id: "task-first-visit-section",
+          title: "Add a first-visit confidence section",
+          detail: "Create a clearer area with contact details, visit guidance, and what a new client should expect before booking."
+        }
+      ],
+      nextMonthPreview: [
+        {
+          title: "Homepage hierarchy improvements",
+          preview: "Reorganize the top of the site around the highest-intent service categories.",
+          why: "This should make it easier for new visitors to know where to start without scanning too much.",
+          unlock: "Unlocks next cycle"
+        },
+        {
+          title: "Gift-certificate seasonal promotion layer",
+          preview: "Build a cleaner promotion path around gifting moments and seasonal demand.",
+          why: "This creates a stronger repeat revenue path without adding a new service line.",
+          unlock: "Unlocks next cycle"
+        },
+        {
+          title: "Monthly newsletter visibility plan",
+          preview: "Turn newsletter signup into a more intentional repeat-visit and promotion system.",
+          why: "This helps keep Luna Blu visible between appointments and promotions.",
+          unlock: "Unlocks next cycle"
+        }
+      ],
+
+      assets: {
+        siteReview: {
+          title: "Website Structure Review",
+          sub: "Public-site review based on visible actions and service structure.",
+          body: `
+            <h3 style="font-size:28px; margin:0 0 10px; color:#0f172a;">Website Structure Review</h3>
+            <p>This mock dashboard treats Luna Blu as a strong Oxford service business with a good base already in place: clear contact info, online booking, gift certificates, and newsletter signup are all publicly visible.</p>
+            <p>The opportunity is less about adding more and more about tightening how the core actions are prioritized for a new visitor.</p>
+            <div class="mini-kpi">Online booking already available</div>
+            <div class="mini-kpi">Gift certificates already available</div>
+            <div class="mini-kpi">Monthly newsletter signup already present</div>
+          `
+        },
+        serviceReview: {
+          title: "Oxford Service Clarity Review",
+          sub: "Focused on helping customers choose the right service faster.",
+          body: `
+            <h3 style="font-size:28px; margin:0 0 10px; color:#0f172a;">Oxford Service Clarity Review</h3>
+            <p>The public site shows a wide range of services: cutting and styling, hair color, nail services, body care, facials, massage, hair removal, and makeovers.</p>
+            <p>That breadth is a strength, but it also means first-time visitors may need stronger guidance on where to start. A cleaner “most booked” or “start here” hierarchy could improve customer confidence and speed up decisions.</p>
+          `
+        },
+        bookingReview: {
+          title: "Booking Path Review",
+          sub: "Focused on improving the visibility and confidence of the appointment flow.",
+          body: `
+            <h3 style="font-size:28px; margin:0 0 10px; color:#0f172a;">Booking Path Review</h3>
+            <p>Online booking is already available, which is a strong advantage. The review focus is how often that action is surfaced, how clearly it is tied to service pages, and whether a first-time visitor knows what to book without extra friction.</p>
+            <p>The cleaner the path from browsing to booking, the more value the existing system can create.</p>
+          `
+        },
+        giftReview: {
+          title: "Gift Certificate Visibility Review",
+          sub: "Focused on using gift cards as a clearer revenue and promotion path.",
+          body: `
+            <h3 style="font-size:28px; margin:0 0 10px; color:#0f172a;">Gift Certificate Visibility Review</h3>
+            <p>Gift certificates are already available and customizable. That makes them a natural conversion path for holidays, student gifting, and local promotions.</p>
+            <p>This review focuses on making them more prominent during seasonal windows and connecting them more intentionally to monthly promotions.</p>
+          `
+        },
+        promoReview: {
+          title: "Monthly Promotions Visibility Plan",
+          sub: "A locked next-cycle layer for repeat-visit and promotion support.",
+          body: `
+            <h3 style="font-size:28px; margin:0 0 10px; color:#0f172a;">Monthly Promotions Visibility Plan</h3>
+            <p>This next-cycle layer focuses on how monthly newsletters, special offers, and gift-certificate moments can work together in a cleaner recurring system.</p>
+            <p>The goal is to help the business not only convert first-time traffic, but also stay visible to existing clients and gift-driven buyers over time.</p>
+          `
+        }
+      }
+    };
+
+    const navItems = [
+      ["overview", "Overview"],
+      ["monthly", "Current Cycle"],
+      ["actionPlan", "Action Plan"],
+      ["checklist", "Checklist"],
+      ["nextMonth", "Next Month Preview"]
+    ];
+
+    const navList = document.getElementById("navList");
+    const modalBackdrop = document.getElementById("modalBackdrop");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalSub = document.getElementById("modalSub");
+    const modalBody = document.getElementById("modalBody");
+    const closeModal = document.getElementById("closeModal");
+
+    function statusClass(status) {
+      if (status === "Live") return "live";
+      return "review";
+    }
+
+    function sectionCard(title, subtitle, body) {
+      return `
+        <div class="card">
+          <h3 class="section-title">${title}</h3>
+          <p class="section-subtitle">${subtitle}</p>
+          <div class="stack" style="margin-top:18px;">${body}</div>
+        </div>
+      `;
+    }
+
+    function rowButton(title, meta, status, assetKey = "") {
+      const clickAttr = assetKey ? `onclick="openAsset('${assetKey}')"` : "";
+      return `
+        <button class="row-btn" ${clickAttr}>
+          <div>
+            <div class="row-title">${title}</div>
+            <div class="row-meta">${meta}</div>
+          </div>
+          <span class="status ${statusClass(status)}">${status}</span>
+        </button>
+      `;
+    }
+
+    function openAsset(key) {
+      const asset = dashboardData.assets[key];
+      if (!asset) return;
+      modalTitle.textContent = asset.title;
+      modalSub.textContent = asset.sub;
+      modalBody.innerHTML = asset.body;
+      modalBackdrop.classList.add("open");
+    }
+
+    function closeAsset() {
+      modalBackdrop.classList.remove("open");
+    }
+
+    closeModal.addEventListener("click", closeAsset);
+    modalBackdrop.addEventListener("click", (e) => {
+      if (e.target === modalBackdrop) closeAsset();
+    });
+
+    function fillSidebar() {
+      document.getElementById("clientName").textContent = dashboardData.business.name;
+      document.getElementById("clientMeta").textContent = `${dashboardData.business.city} · ${dashboardData.business.serviceLine}`;
+      document.getElementById("planPill").textContent = dashboardData.business.planStatus;
+      document.getElementById("focusList").innerHTML = dashboardData.focus.map(item => `<li>${item}</li>`).join("");
+    }
+
+    function renderOverview() {
+      fillSidebar();
+      document.getElementById("overview").innerHTML = `
+        <div class="topbar">
+          <div>
+            <div class="eyebrow muted">Overview</div>
+            <h1 class="page-title">${dashboardData.business.dashboardTitle}</h1>
+            <p class="page-copy">A polished example dashboard for an Oxford, Ohio salon and spa business. This version is designed to make the client experience feel simple: understand what matters, see what is happening now, know what to change, and see what is coming next.</p>
+          </div>
+          <div class="update-badge">mock dashboard example</div>
+        </div>
+
+        <div class="stats">
+          ${dashboardData.stats.map(stat => `
+            <div class="card">
+              <div class="stat-label">${stat.label}</div>
+              <div class="stat-value">${stat.value}</div>
+              <div class="stat-detail">${stat.detail}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="two-col">
+          ${sectionCard(
+            "Current view",
+            "The biggest things that matter most right now.",
+            dashboardData.currentView.map(item => `
+              <div class="score-row">
+                <span>${item.label}</span>
+                <div style="text-align:right; max-width:60%;">
+                  <strong style="display:block; font-size:20px; color:#0f172a;">${item.value}</strong>
+                  <span style="font-size:13px; color:#64748b;">${item.detail}</span>
+                </div>
+              </div>
+            `).join("")
+          )}
+          ${sectionCard(
+            "Priority summary",
+            "A quick view of where improvement value is most likely to come from.",
+            dashboardData.priorities.map(([label, value]) => `
+              <div class="score-row">
+                <span>${label}</span>
+                <strong style="color:#0f172a;">${value}</strong>
+              </div>
+            `).join("")
+          )}
+        </div>
+
+        <div class="info-grid">
+          <div class="card info-box">
+            <div class="info-title">What the client should do first</div>
+            <div class="info-copy">Go to <strong>Current Cycle</strong> for the monthly summary, then <strong>Action Plan</strong> for exactly what to change, then <strong>Checklist</strong> to track what still needs to get done.</div>
+          </div>
+          <div class="card info-box">
+            <div class="info-title">Why this dashboard works</div>
+            <div class="info-copy">It removes clutter and keeps the business focused on what matters now instead of mixing too many review layers together.</div>
+          </div>
+          <div class="card info-box">
+            <div class="info-title">How recurring value is protected</div>
+            <div class="info-copy">The client gets a clear current-month plan now, while the next month stays previewed without giving away the full next cycle.</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderMonthly() {
+      document.getElementById("monthly").innerHTML = `
+        <div>
+          <div class="eyebrow muted">Current Cycle</div>
+          <h1 class="page-title">Current Cycle</h1>
+          <p class="page-copy">A simple cycle-by-cycle view of what has been reviewed, what is being tightened right now, and what becomes available in the next support phase.</p>
+        </div>
+
+        <div class="priority-card">
+          <div class="eyebrow" style="margin-bottom:10px; color:#e5c88f;">${dashboardData.monthlyUpdates.monthLabel}</div>
+          <h3>Main Focus Right Now</h3>
+          <p>${dashboardData.monthlyUpdates.topPriority}</p>
+        </div>
+
+        <div class="two-col">
+          ${sectionCard(
+            "Completed",
+            "What has already been reviewed or organized in this cycle.",
+            dashboardData.monthlyUpdates.completed.map(item => `<div class="soft-box">${item}</div>`).join("")
+          )}
+          ${sectionCard(
+            "In Progress",
+            "What is actively being tightened right now.",
+            dashboardData.monthlyUpdates.inProgress.map(item => `<div class="soft-box">${item}</div>`).join("")
+          )}
+        </div>
+
+        <div class="two-col">
+          ${sectionCard(
+            "Unlocked Next Month",
+            "What becomes available in the next cycle.",
+            dashboardData.monthlyUpdates.unlockedNextMonth.map(item => `<div class="soft-box locked-note">${item}</div>`).join("")
+          )}
+          ${sectionCard(
+            "Notes",
+            "Important context for how this dashboard should be used.",
+            dashboardData.monthlyUpdates.notes.map(item => `<div class="soft-box">${item}</div>`).join("")
+          )}
+        </div>
+      `;
+    }
+
+    function renderActionPlan() {
+      document.getElementById("actionPlan").innerHTML = `
+        <div>
+          <div class="eyebrow muted">Action Plan</div>
+          <h1 class="page-title">Action Plan</h1>
+          <p class="page-copy">This is the section the business would use to see exactly what to change this month, how to change it, what to change it to, and what the finished result should look like.</p>
+        </div>
+
+        <div class="stack" style="margin-top:24px;">
+          ${dashboardData.actionPlan.map(item => `
+            <div class="card action-item">
+              <div class="action-top">
+                <div>
+                  <h3 class="action-title">${item.title}</h3>
+                </div>
+                <span class="priority-pill ${item.priority.toLowerCase()}">${item.priority} Priority</span>
+              </div>
+
+              <div class="action-grid">
+                <div>
+                  <div class="label">Issue</div>
+                  <div class="value">${item.issue}</div>
+                </div>
+                <div>
+                  <div class="label">What to change</div>
+                  <div class="value">${item.changeWhat}</div>
+                </div>
+                <div>
+                  <div class="label">Change it to</div>
+                  <div class="value">${item.changeTo}</div>
+                </div>
+                <div>
+                  <div class="label">Why this is better</div>
+                  <div class="value">${item.why}</div>
+                </div>
+              </div>
+
+              <div class="action-grid" style="margin-top:14px;">
+                <div>
+                  <div class="label">How to do it</div>
+                  <div class="value"><ul style="margin:0; padding-left:18px; line-height:1.7;">${item.howTo.map(step => `<li>${step}</li>`).join("")}</ul></div>
+                </div>
+                <div>
+                  <div class="label">What to use</div>
+                  <div class="value"><ul style="margin:0; padding-left:18px; line-height:1.7;">${item.whatToUse.map(step => `<li>${step}</li>`).join("")}</ul></div>
+                </div>
+              </div>
+
+              <div style="margin-top:14px;">
+                <div class="label">Done looks like</div>
+                <div class="value">${item.doneLooksLike}</div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function getChecklistState(id) {
+      return localStorage.getItem(`check-${id}`) === "done";
+    }
+
+    function toggleChecklist(id, checked) {
+      localStorage.setItem(`check-${id}`, checked ? "done" : "open");
+      renderChecklist();
+    }
+
+    function renderChecklist() {
+      const openItems = dashboardData.checklist.filter(item => !getChecklistState(item.id));
+      const doneItems = dashboardData.checklist.filter(item => getChecklistState(item.id));
+
+      document.getElementById("checklist").innerHTML = `
+        <div>
+          <div class="eyebrow muted">Checklist</div>
+          <h1 class="page-title">This Month’s Checklist</h1>
+          <p class="page-copy">A simple section for the client or manager to follow month by month. When an item is checked off, it moves into the completed section below instead of cluttering the active list.</p>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+            <h3 class="section-title">Active checklist</h3>
+            <p class="section-subtitle">The things that still need to get done this month.</p>
+            <div class="check-wrap" style="margin-top:18px;">
+              ${openItems.length ? openItems.map(item => `
+                <label class="check-item">
+                  <input type="checkbox" onchange="toggleChecklist('${item.id}', this.checked)">
+                  <div>
+                    <div class="check-title">${item.title}</div>
+                    <div class="check-row">${item.detail}</div>
+                  </div>
+                </label>
+              `).join("") : `<div class="completed-empty">Everything for this month has been checked off.</div>`}
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="section-title">Completed this month</h3>
+            <p class="section-subtitle">Checked items move here so progress stays visible.</p>
+            <div class="completed-wrap">
+              ${doneItems.length ? doneItems.map(item => `
+                <div class="check-item done">
+                  <input type="checkbox" checked onchange="toggleChecklist('${item.id}', this.checked)">
+                  <div>
+                    <div class="check-title">${item.title}</div>
+                    <div class="check-row">${item.detail}</div>
+                  </div>
+                </div>
+              `).join("") : `<div class="completed-empty">No items completed yet this month.</div>`}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderNextMonth() {
+      document.getElementById("nextMonth").innerHTML = `
+        <div>
+          <div class="eyebrow muted">Next Month Preview</div>
+          <h1 class="page-title">Next Month Preview</h1>
+          <p class="page-copy">A clean preview of what is planned for the next cycle without fully unlocking the details yet. This keeps the dashboard easy to follow while protecting recurring monthly value.</p>
+        </div>
+
+        <div class="stack" style="margin-top:24px;">
+          ${dashboardData.nextMonthPreview.map(item => `
+            <div class="card action-item">
+              <div class="action-top">
+                <div>
+                  <h3 class="action-title">${item.title}</h3>
+                </div>
+                <span class="priority-pill medium">${item.unlock}</span>
+              </div>
+
+              <div class="action-grid">
+                <div>
+                  <div class="label">Preview</div>
+                  <div class="value">${item.preview}</div>
+                </div>
+                <div>
+                  <div class="label">Why it is next</div>
+                  <div class="value">${item.why}</div>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function renderDeliverables() {}
+
+    function approveItem(id) {
+      localStorage.setItem(id, "approved");
+      renderApprovals();
+    }
+
+    function renderApprovals() {}
+
+    function setActiveScreen(id) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelector(`[data-screen="${id}"]`).classList.add('active');
+    }
+
+    navList.innerHTML = navItems.map(([id, label], index) => `
+      <button class="nav-btn ${index === 0 ? 'active' : ''}" data-screen="${id}">${label}</button>
+    `).join('');
+
+    navList.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => setActiveScreen(btn.dataset.screen));
+    });
+
+    renderOverview();
+    renderMonthly();
+    renderActionPlan();
+    renderChecklist();
+    renderNextMonth();
+
+    window.openAsset = openAsset;
+    window.approveItem = approveItem;
+    window.toggleChecklist = toggleChecklist;
+  </script>
+</body>
+</html>
