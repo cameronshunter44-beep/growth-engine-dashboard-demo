@@ -386,6 +386,82 @@
       color: #8d6416;
     }
 
+    .preview-lock-card {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .preview-lock-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.52));
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .preview-lock-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .preview-lock-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0f172a;
+      margin: 0;
+      filter: blur(2px);
+      opacity: 0.65;
+    }
+
+    .preview-lock-copy {
+      margin-top: 10px;
+      color: #64748b;
+      line-height: 1.7;
+      filter: blur(2px);
+      opacity: 0.65;
+      position: relative;
+      z-index: 1;
+    }
+
+    .preview-only-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #e8edf5;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .preview-lock-highlight {
+      margin-top: 18px;
+      background: linear-gradient(180deg, #12264a 0%, #0f2140 100%);
+      color: #ffffff;
+      border-radius: 18px;
+      padding: 16px 18px;
+      font-size: 15px;
+      line-height: 1.65;
+      font-weight: 700;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+    }
+
     .info-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -611,7 +687,7 @@
       <div class="nav-list" id="navList"></div>
 
       <div class="sidebar-card" style="margin-top:16px;">
-        <div style="font-size:14px; font-weight:800;">Current Review Focus</div>
+        <div style="font-size:14px; font-weight:800;">Big-Brand Success Focus</div>
         <ul class="list" id="focusList"></ul>
       </div>
     </aside>
@@ -649,9 +725,9 @@
       },
 
       focus: [
-        "Keep online booking and gift-certificate paths highly visible",
-        "Clarify top services faster for new visitors",
-        "Turn promotions, newsletters, and booking into one cleaner monthly rhythm"
+        "Borrow what large service brands do well: clear booking, repeat visits, gifting, and trust",
+        "Turn big-brand systems into simple small-business action steps",
+        "Show exactly what to fix, what to change it to, and how to implement it"
       ],
 
       stats: [
@@ -701,138 +777,148 @@
       ],
 
       priorities: [
-        ["Top customer question", "What should I book?"],
-        ["Top conversion point", "Booking CTA visibility"],
-        ["Top trust factor", "Clear service structure"],
-        ["Top extra revenue path", "Gift certificates"],
-        ["Top recurring angle", "Monthly promotions"]
+        ["Big-brand pattern", "Clear next step"],
+        ["Main conversion lever", "Booking visibility"],
+        ["Main retention lever", "Repeat visits"],
+        ["Main extra revenue lever", "Gift certificates"],
+        ["Main trust lever", "Simpler customer path"]
       ],
 
       monthlyUpdates: {
         monthLabel: "Current Review Cycle",
-        topPriority: "Use this cycle to make Luna Blu easier to understand for a first-time Oxford visitor, while keeping online booking, gift certificates, and monthly promotions more visible and more connected.",
+        topPriority: "Use this cycle to compare Luna Blu to the habits of strong service brands: make the next step obvious, reduce customer uncertainty, increase repeat-visit behavior, and turn existing offers like gift certificates into more intentional revenue drivers.",
         completed: [
-          "Reviewed the core website structure, service categories, online booking flow, and gift-certificate placement.",
-          "Mapped the main public service categories including cutting and styling, hair color, nail services, body care, facials, massage, hair removal, and makeovers.",
-          "Identified online booking, gift certificates, and newsletter signup as the clearest current customer actions."
+          "Reviewed the public site structure, visible booking flow, gift-certificate access, and newsletter path.",
+          "Mapped the core public service categories and identified where first-time visitors may hesitate or over-scan.",
+          "Compared the current customer path against strong service-brand habits like obvious booking, gifting visibility, and repeat-visit support."
         ],
         inProgress: [
-          "Refining which services should be surfaced first for easier customer decision-making.",
-          "Tightening the booking path so visitors reach the right appointment action faster.",
-          "Organizing promotions and monthly update content into a cleaner client-facing system."
+          "Turning large-brand service ideas into simpler small-business changes Luna Blu could realistically use.",
+          "Refining the highest-value changes around booking visibility, service selection, and first-visit confidence.",
+          "Organizing the dashboard so the client sees what to change now, how to do it, and what comes next."
         ],
         unlockedNextMonth: [
-          "Homepage hierarchy improvements for high-intent service categories unlock next cycle.",
-          "Gift-certificate and seasonal promotion strategy unlocks next cycle.",
-          "Monthly newsletter and repeat-visit visibility plan unlocks with continued support."
+          "Repeat-visit and pre-booking system improvements unlock next cycle.",
+          "Seasonal promotion and gift-certificate campaign structure unlocks next cycle.",
+          "Monthly retention visibility plan built around repeat visits and offers unlocks with continued support."
         ],
         notes: [
-          "The strongest current actions are already present on the site, so the biggest gains are likely to come from clarity, ordering, and visibility.",
-          "This business has multiple service lines, so simplifying choice is likely more valuable than adding more options.",
-          "The next-cycle section is intentionally previewed to support recurring monthly service value."
+          "The point is not to copy large brands exactly. It is to borrow the parts that make them easier to buy from.",
+          "This dashboard should keep translating successful big-brand systems into simpler small-business versions.",
+          "The next-cycle section stays previewed so current-month value is clear without giving away the full next phase."
         ]
       },
 
       actionPlan: [
         {
-          title: "Make booking more visible above the fold",
+          title: "Make the booking action feel as obvious as a major service brand",
           priority: "High",
-          issue: "A new visitor should see the booking action quickly without needing to hunt through service content.",
-          changeWhat: "Move the primary booking call-to-action higher and repeat it more consistently on high-intent pages.",
-          changeTo: "Use a cleaner primary button treatment like ‘Book Your Appointment’ near the top of the homepage and service-entry sections.",
+          issue: "Strong service brands make the main action clear immediately, but smaller businesses often make visitors search too long before taking the next step.",
+          changeWhat: "Move the booking action higher, repeat it more intentionally, and make it look like the most important thing to click.",
+          changeTo: "Use one dominant CTA like ‘Book Your Appointment’ in the first screen area and repeat it under top service-entry sections.",
           howTo: [
-            "Place one main booking button in the hero or first visible section of the homepage.",
-            "Repeat the same booking button under the first service-entry block so visitors see it again after scanning services.",
-            "Use the same wording everywhere instead of changing the CTA language from page to page.",
-            "Keep the button visually stronger than secondary links so it clearly reads as the main action."
+            "Place one main booking button in the hero or first visible homepage section.",
+            "Repeat the same CTA again below the most important service categories.",
+            "Use the same wording everywhere instead of changing the CTA from page to page.",
+            "Visually style that button as the primary action and reduce competing links nearby."
           ],
           whatToUse: [
             "Primary button text: ‘Book Your Appointment’",
-            "Support text: ‘Choose your service and reserve your time online.’",
-            "Placement: hero section + top service-entry section"
+            "Support line: ‘Choose your service and reserve your time online.’",
+            "Placement: hero section + first service-entry section"
           ],
-          why: "This makes the highest-value action easier to notice and reduces friction for ready-to-book visitors.",
-          doneLooksLike: "A first-time visitor can land on the homepage, immediately see that online booking is available, and reach the appointment path without scrolling through too much content."
+          bigBrandMove: "Major service businesses make the next step obvious right away instead of making customers guess what to do.",
+          applyIt: "Luna Blu does not need a giant app or chain-level system. It just needs the booking action to feel faster, clearer, and more repeated.",
+          why: "This reduces friction for high-intent visitors and brings the site closer to the easiest-to-buy-from service brands.",
+          doneLooksLike: "A first-time visitor can land on the site, understand that booking is the main action, and reach the correct next step without scanning around too much."
         },
         {
-          title: "Create a clearer ‘Start Here’ service structure",
+          title: "Use a ‘Start Here’ structure like strong multi-service brands",
           priority: "High",
-          issue: "A business with many services can create hesitation when first-time visitors are not sure where to begin.",
-          changeWhat: "Group top categories more intentionally and help visitors understand the most common entry paths.",
-          changeTo: "Add a ‘Start Here’ or ‘Most Booked Services’ section that highlights the most common categories first.",
+          issue: "Businesses with many services often create hesitation because the first-time customer is not sure where to begin.",
+          changeWhat: "Group the most important service paths first instead of showing everything with equal visual weight.",
+          changeTo: "Add a ‘Start Here’ or ‘Most Booked Services’ section that highlights the most common entry categories first.",
           howTo: [
-            "Choose 3 to 5 top service categories that are most likely to matter to a new visitor.",
+            "Choose 3 to 5 top service categories that are most useful to a first-time visitor.",
             "Place those categories above longer full-menu content.",
-            "Use short one-line descriptions under each category so someone knows what each one is for.",
-            "Link each category directly to its booking or detail path instead of making the customer search again."
+            "Use short one-line descriptions so customers quickly understand what each option is for.",
+            "Link each featured category directly to its booking or detail path."
           ],
           whatToUse: [
             "Section heading: ‘Start Here’ or ‘Most Booked Services’",
             "Example categories: Hair Color, Massage, Facials, Nail Services",
             "Format: 3–5 clean cards with short descriptions"
           ],
-          why: "This helps customers make faster decisions and improves confidence instead of forcing them to scan everything.",
-          doneLooksLike: "A new visitor can quickly understand the main service paths and choose where to start without reading the full service menu first."
+          bigBrandMove: "Successful service brands simplify the first choice so customers do not feel overwhelmed by too many options at once.",
+          applyIt: "For Luna Blu, that means helping people choose where to start instead of making them read the entire service menu first.",
+          why: "This improves confidence, reduces choice overload, and makes the site feel more guided.",
+          doneLooksLike: "A new visitor can understand the main service paths quickly and choose where to start without needing to sort through the full menu."
         },
         {
-          title: "Use gift certificates more intentionally",
+          title: "Treat gift certificates like a real revenue channel",
           priority: "Medium",
-          issue: "Gift certificates are valuable, but they may feel like a side option instead of a strategic revenue path.",
-          changeWhat: "Surface gift certificates in seasonal areas and near repeat-visit or gifting moments.",
-          changeTo: "Add a more visible gift-certificate feature block tied to holidays, celebrations, and local gifting moments.",
+          issue: "Large service brands use gifting more strategically, while smaller businesses often leave gift certificates too hidden or too passive.",
+          changeWhat: "Feature gift certificates more intentionally as a recurring promotional and seasonal sales path.",
+          changeTo: "Add a visible homepage gift-certificate block tied to holidays, birthdays, thank-you gifts, and local gifting moments.",
           howTo: [
-            "Place a gift-certificate callout on the homepage or promotions area instead of burying it only in navigation.",
-            "Use seasonal language around birthdays, holidays, thank-you gifts, and self-care gifting.",
-            "Repeat the gift-certificate mention during peak gifting periods in banners or monthly promo sections.",
-            "Keep the path to purchase short and obvious."
+            "Move gift-certificate messaging into a visible homepage or promotions section.",
+            "Use seasonal and occasion-based language instead of generic gift card wording.",
+            "Mention the gifting option in monthly promotions and newsletter content.",
+            "Keep the purchase path short and easy to understand."
           ],
           whatToUse: [
             "Section heading: ‘Gift the Luna Blu Experience’",
             "Support line: ‘Perfect for holidays, birthdays, thank-you gifts, and self-care treats.’",
-            "Placement: homepage promo area + seasonal promo spots"
+            "Placement: homepage promo area + seasonal highlights"
           ],
-          why: "This supports extra revenue without needing a new service line.",
-          doneLooksLike: "Gift certificates feel like a real featured offer instead of a hidden extra, especially during gifting seasons."
+          bigBrandMove: "Successful service brands treat gift cards and promotional credits as a real part of the revenue system, not just a small extra link.",
+          applyIt: "Luna Blu can do the same on a smaller scale by making gifting visible during natural buying moments.",
+          why: "This creates extra revenue without adding a new service line and gives non-bookers an easier buying path.",
+          doneLooksLike: "Gift certificates feel like a featured offer that customers can easily notice and buy during seasonal or event-driven moments."
         },
         {
-          title: "Turn newsletter signup into a repeat-visit tool",
+          title: "Build a repeat-visit system instead of only selling the current appointment",
           priority: "Medium",
-          issue: "Newsletter signup can feel passive if it is not clearly connected to ongoing offers or reasons to return.",
-          changeWhat: "Position newsletter signup as a way to stay updated on promotions, gift ideas, and featured services.",
-          changeTo: "Shift the message to something like ‘Get monthly salon and spa updates, seasonal specials, and gift ideas.’",
+          issue: "Large service brands win by protecting retention and future visits, while smaller businesses often focus only on the current booking.",
+          changeWhat: "Make repeat visits, monthly updates, and ongoing reminders part of the visible customer path.",
+          changeTo: "Position newsletter signup and promotional messaging as a repeat-visit system tied to seasonal specials, featured services, and staying on schedule.",
           howTo: [
-            "Rewrite the signup headline so it clearly says what the customer gets.",
-            "Place the signup near promotions, gift cards, or repeat-visit areas instead of treating it like a generic footer element.",
-            "Keep the message short and benefit-driven.",
-            "Use consistent monthly themes so signing up feels worth it."
+            "Rewrite the newsletter section so it explains why someone should stay connected.",
+            "Use monthly offers, reminders, or featured services as the reason to stay subscribed.",
+            "Mention repeat-visit value in follow-up areas, gift sections, or service maintenance language.",
+            "Keep the tone practical and benefit-based."
           ],
           whatToUse: [
-            "Headline: ‘Stay in the loop’ or ‘Get monthly salon + spa updates’",
+            "Headline: ‘Get monthly salon + spa updates’",
             "Support line: ‘Seasonal specials, featured services, and gift ideas sent monthly.’",
-            "Placement: promotions section or lower homepage conversion area"
+            "Positioning angle: stay visible between appointments"
           ],
-          why: "This makes signup more relevant and supports recurring visibility over time.",
-          doneLooksLike: "The newsletter signup feels like a useful ongoing value path instead of a generic email box."
+          bigBrandMove: "The strongest service brands do not just sell the current visit — they build the next visit into the customer relationship.",
+          applyIt: "For Luna Blu, that means using updates and promotions to keep people engaged between appointments.",
+          why: "This supports repeat visits and helps the business stay visible instead of relying only on new traffic each month.",
+          doneLooksLike: "The newsletter and promotion system feels connected to future visits and ongoing customer retention, not just a passive signup form."
         },
         {
-          title: "Add a stronger contact and first-visit confidence section",
+          title: "Reduce uncertainty the way large service brands do",
           priority: "Medium",
-          issue: "New visitors may want quick reassurance around where to go, how to reach the salon, and what to expect before booking.",
-          changeWhat: "Make contact details, first-visit guidance, and confidence-building info more visible near key decision points.",
-          changeTo: "Add a cleaner ‘Plan Your Visit’ or ‘Before You Book’ section with address, phone, parking or arrival guidance, and simple first-visit expectations.",
+          issue: "Big service businesses reduce hesitation by answering simple questions early, while smaller businesses often leave first-time visitors with avoidable uncertainty.",
+          changeWhat: "Add clearer first-visit guidance, contact visibility, and confidence-building details near decision points.",
+          changeTo: "Create a ‘Plan Your Visit’ or ‘Before You Book’ section with address, phone, arrival guidance, and simple first-visit expectations.",
           howTo: [
-            "Create a short section that answers the most basic first-visit questions.",
-            "Include address, phone, and what a new client should expect before arriving.",
-            "Place it below high-intent service or booking areas so hesitant visitors get reassurance before leaving the page.",
-            "Keep the tone simple and welcoming rather than overly detailed."
+            "Create one short section that answers the most common first-visit questions.",
+            "Include address, phone, and a few calm notes about what a new client should expect.",
+            "Place it near booking areas or below high-intent service content.",
+            "Keep the copy simple, welcoming, and easy to skim."
           ],
           whatToUse: [
             "Section heading: ‘Plan Your Visit’ or ‘Before You Book’",
             "Include: address, phone, arrival guidance, and simple first-visit notes",
             "Tone: short, calm, welcoming"
           ],
-          why: "This reduces hesitation for first-time visitors and makes the business feel more prepared and easier to trust.",
-          doneLooksLike: "A new customer can quickly understand where Luna Blu is, how to contact the salon, and what to expect before their first appointment."
+          bigBrandMove: "Strong service brands reduce uncertainty because trust rises when the customer knows what to expect.",
+          applyIt: "Luna Blu can create the same effect in a simpler way by making key reassurance points visible before the customer leaves the page.",
+          why: "This reduces hesitation for first-time visitors and makes the business feel more trustworthy and more prepared.",
+          doneLooksLike: "A new customer can quickly understand where Luna Blu is, how to contact the salon, and what to expect before the first appointment."
         }
       ],
 
@@ -1116,7 +1202,7 @@
         <div>
           <div class="eyebrow muted">Action Plan</div>
           <h1 class="page-title">Action Plan</h1>
-          <p class="page-copy">This is the section the business would use to see exactly what to change this month, how to change it, what to change it to, and what the finished result should look like.</p>
+          <p class="page-copy">This section translates what strong service brands do well into simpler small-business steps. Each item shows what to fix now, how to fix it, what to change it to, and why that model works so well for larger successful service brands.</p>
         </div>
 
         <div class="stack" style="margin-top:24px;">
@@ -1145,6 +1231,17 @@
                 <div>
                   <div class="label">Why this is better</div>
                   <div class="value">${item.why}</div>
+                </div>
+              </div>
+
+              <div class="action-grid" style="margin-top:14px;">
+                <div>
+                  <div class="label">What successful service brands do</div>
+                  <div class="value">${item.bigBrandMove}</div>
+                </div>
+                <div>
+                  <div class="label">How this business can apply it</div>
+                  <div class="value">${item.applyIt}</div>
                 </div>
               </div>
 
@@ -1230,28 +1327,25 @@
         <div>
           <div class="eyebrow muted">Next Month Preview</div>
           <h1 class="page-title">Next Month Preview</h1>
-          <p class="page-copy">A clean preview of what is planned for the next cycle without fully unlocking the details yet. This keeps the dashboard easy to follow while protecting recurring monthly value.</p>
+          <p class="page-copy">A locked preview of what is planned for the next cycle. It shows the direction of the next update without fully giving away the full next month details yet.</p>
         </div>
 
         <div class="stack" style="margin-top:24px;">
           ${dashboardData.nextMonthPreview.map(item => `
-            <div class="card action-item">
-              <div class="action-top">
+            <div class="preview-lock-card">
+              <div class="preview-lock-top">
                 <div>
-                  <h3 class="action-title">${item.title}</h3>
+                  <h3 class="preview-lock-title">${item.title}</h3>
                 </div>
-                <span class="priority-pill medium">${item.unlock}</span>
+                <span class="preview-only-pill">Preview Only</span>
               </div>
 
-              <div class="action-grid">
-                <div>
-                  <div class="label">Preview</div>
-                  <div class="value">${item.preview}</div>
-                </div>
-                <div>
-                  <div class="label">Why it is next</div>
-                  <div class="value">${item.why}</div>
-                </div>
+              <div class="preview-lock-copy">
+                ${item.preview} ${item.why}
+              </div>
+
+              <div class="preview-lock-highlight">
+                <strong>${item.title}:</strong> ${item.preview}
               </div>
             </div>
           `).join("")}
